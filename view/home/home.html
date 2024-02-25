@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <title>AGROSYS | Home</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">  
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="icon" type="image/png" href="../../images/icons/favicon.ico"/>
+    <link rel="stylesheet" type="text/css" href="../../vendor/css-hamburgers/hamburgers.min.css">
+    <link rel="stylesheet" type="text/css" href="../../fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="../../vendor/animate/animate.css">
+    <link rel="stylesheet" type="text/css" href="../../vendor/animsition/css/animsition.min.css">
+    <link rel="stylesheet" type="text/css" href="../../vendor/select2/select2.min.css">
+    <link rel="stylesheet" type="text/css" href="../../vendor/daterangepicker/daterangepicker.css">
+    <link rel="stylesheet" type="text/css" href="../../css/util.css">
+    <link rel="stylesheet" type="text/css" href="../../css/main.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand">AGROSYS</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="./home.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../cadastrarCliente/cadastrarCliente.html">Cadastrar Cliente</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Cadastrar Endereço</a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span id="nomeUsuario"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li id="minhaContaItem"><button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdropLogin">Alterar email</button></li>
+                            <li id="minhaContaItem"><button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdropSenha">Alterar senha</button></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li id="logoutItem" onmouseleave="colorTransformation('logout', false)" onmouseenter="colorTransformation('logout', true)"><a class="dropdown-item" id="logoutBtn" style="cursor: pointer;"><p id="logoutText" onclick="encerrarSessao()">Sair</p></a></li>
+                        </ul>
+                    </li>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!--ALERTA SUCCESS LOGIN-->
+    <div class="alert alert-success" role="alert" id="alertSuccess" style="display: none;">
+        Login realizado com sucesso!
+    </div>
+
+    <!--CONTEÚDO-->
+    <div class="container" style="margin-bottom: 80px;">
+
+        <!-- MODAL ALTERAR EMAIL -->
+        <div class="modal fade" id="staticBackdropLogin" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Alterar email</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="novoEmail" class="form-label">Novo email</label>
+                        <input type="email" class="form-control" name="novoEmail" id="novoEmail" placeholder="name@example.com">
+                    </div>
+                    <div class="mb-3">
+                        <label for="senhaUsuario" class="form-label">Senha atual</label>
+                        <input type="password" class="form-control" name="senhaUsuario" id="senhaUsuario">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" id="btnSalvarAlteracoes" class="btn btn-success">Salvar Alterações</button>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <!-- MODAL ALTERAR SENHA -->
+        <div class="modal fade" id="staticBackdropSenha" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Alterar senha</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="novaSenha" class="form-label">Nova senha</label>
+                        <input type="password" class="form-control" name="novaSenha" id="novaSenha">
+                    </div>
+                    <div class="mb-3">
+                        <label for="confirmarNovaSenha" class="form-label">Confirmar senha</label>
+                        <input type="password" class="form-control" name="confirmarNovaSenha" id="confirmarNovaSenha">
+                    </div>
+                    <div class="mb-3">
+                        <label for="senha" class="form-label">Senha atual</label>
+                        <input type="password" class="form-control" name="senha" id="senha">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" id="btnSalvar" class="btn btn-success">Salvar Alterações</button>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <div class="apresentacao">
+            <div class="row align-items-center">
+                <div class="col-1" style="margin-right: -10px;">
+                    <i class="fas fa-fire" style="font-size: 1rem; margin-right: 0px; color: #5a94e5;"></i>
+                </div>
+                <div class="col-11" style="color: #5a94e5;">
+                    <b>NOSSOS CLIENTES</b>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <h4>Confira todos os clientes</h4>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-md-4 col-sm-6">
+                <a href="#" style="text-decoration: none; color: inherit;">
+                    <div class="card" style="box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);">
+                        <img src="../login/img/imgLogin.jpg" class="card-img-top img-fluid" alt="..." style="height: 200px; object-fit: cover;">
+                        <div class="card-body">
+                            <h5 class="card-title">Vitor Hugo</h5>
+                            <p class="card-text" style="margin-bottom: 5%;">Vitor Hugo, desenvolvedor full-stack da empresa AgroSys</p>
+                            <a href="#" class="btn btn-primary d-flex justify-content-between align-items-center">
+                                <span>EDITAR INFORMAÇÕES</span>
+                                <i class="fas fa-arrow-right" style="margin-left: 5px; font-size: 1rem;"></i>
+                            </a>                            
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <a href="#" style="text-decoration: none; color: inherit;">
+                    <div class="card" style="box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);">
+                        <img src="../login/img/imgLogin.jpg" class="card-img-top img-fluid" alt="..." style="height: 200px; object-fit: cover;">
+                        <div class="card-body">
+                            <h5 class="card-title">Vitor Hugo</h5>
+                            <p class="card-text" style="margin-bottom: 5%;">Vitor Hugo, desenvolvedor full-stack da empresa AgroSys</p>
+                            <a href="#" class="btn btn-primary d-flex justify-content-between align-items-center">
+                                <span>EDITAR INFORMAÇÕES</span>
+                                <i class="fas fa-arrow-right" style="margin-left: 5px; font-size: 1rem;"></i>
+                            </a>                            
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <a href="#" style="text-decoration: none; color: inherit;">
+                    <div class="card" style="box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);">
+                        <img src="../login/img/imgLogin.jpg" class="card-img-top img-fluid" alt="..." style="height: 200px; object-fit: cover;">
+                        <div class="card-body">
+                            <h5 class="card-title">Vitor Hugo</h5>
+                            <p class="card-text" style="margin-bottom: 5%;">Vitor Hugo, desenvolvedor full-stack da empresa AgroSys</p>
+                            <a href="#" class="btn btn-primary d-flex justify-content-between align-items-center">
+                                <span>EDITAR INFORMAÇÕES</span>
+                                <i class="fas fa-arrow-right" style="margin-left: 5px; font-size: 1rem;"></i>
+                            </a>                            
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>  
+
+    <footer class="mt-4">
+        &copy; 2024 AGROSYS Todos os direitos reservados.
+    </footer>
+    <script src="../../vendor/jquery/jquery-3.2.1.min.js"></script>
+    <script src="../../vendor/bootstrap/js/popper.js"></script>
+    <script src="../../vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../../vendor/animsition/js/animsition.min.js"></script>
+    <script src="../../vendor/select2/select2.min.js"></script>
+    <script src="../../vendor/daterangepicker/moment.min.js"></script>
+    <script src="../../vendor/daterangepicker/daterangepicker.js"></script>
+    <script src="../../vendor/countdowntime/countdowntime.js"></script>
+    <script src="../loginRepository/login.js"></script>
+    <script src="../homeRepository/home.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alasql@latest"></script>
+    <script src="../../js/main.js"></script>
+    <script>
+
+        // CRIAR BANCO DE DADOS
+		alasql(`
+            CREATE LOCALSTORAGE DATABASE IF NOT EXISTS agrosqldb;
+            ATTACH LOCALSTORAGE DATABASE agrosqldb;
+            USE agrosqldb;
+        `);
+
+        // FUNÇÃO ALTERAR EMAIL USUÁRIO
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById("btnSalvarAlteracoes").addEventListener("click", async function() {
+                var usuarioLogado = getCookie("usuarioLogado");
+
+                if (usuarioLogado) {
+                    var usuario = JSON.parse(usuarioLogado);
+                    var senhaUsuario = document.getElementById("senhaUsuario").value;
+                    var novoEmail = document.getElementById("novoEmail").value;
+                    var idUsuario = usuario.id;
+
+                    console.log(idUsuario);
+
+                    if (verificarSenha(senhaUsuario, usuario.senha)) {
+                        if (novoEmail !== usuario.email) {
+                            var sql = `UPDATE usuarios SET email = ? WHERE id = ?`;
+                            console.log("SQL para atualização do email:", sql);
+                        
+                            alasql(sql, [novoEmail, idUsuario]);
+                        
+                            console.log("Email atualizado com sucesso no banco de dados!");
+                        
+                            usuario.email = novoEmail;
+                            document.cookie = `usuarioLogado=${JSON.stringify(usuario)}; path=/`;
+                        
+                            alert("Email atualizado com sucesso!");
+                            window.location.href = "../home/home.html";
+                            return;
+                        } else {
+                            alert("O novo email deve ser diferente do seu próprio email.");
+                            return;
+                        }
+                    } else {
+                        alert("Senha incorreta! Por favor, verifique a senha.");
+                        return;
+                    }
+                } else {
+                    console.error("Cookie usuarioLogado não encontrado.");
+                }
+            });
+
+            document.getElementById("btnSalvar").addEventListener("click", async function() {
+                var usuarioLogado = getCookie("usuarioLogado");
+
+                if(usuarioLogado) {
+                    var usuario = JSON.parse(usuarioLogado);
+                    var novaSenha = document.getElementById("novaSenha").value;
+                    var confirmarNovaSenha = document.getElementById("confirmarNovaSenha").value;
+                    var senhaAtual = document.getElementById("senha").value;
+
+                    if(novaSenha == confirmarNovaSenha) {
+                        if(verificarSenha(senhaAtual, usuario.senha)) {
+
+                            var senhaCriptografada = encryptPassword(novaSenha);
+
+                            var sqlUpdateSenha = `UPDATE usuarios SET senha = ? WHERE id = ?`;
+                            alasql(sqlUpdateSenha, [senhaCriptografada, usuario.id]);
+
+                            usuario.senha = senhaCriptografada;
+                            document.cookie = `usuarioLogado=${JSON.stringify(usuario)}; path=/`;
+
+                            alert("Senha atualizada com sucesso!");
+                            window.location.href = "../home/home.html";
+                            return;
+                        } else {
+                            alert("Senha incorreta! Por favor, insira uma senha válida!");
+                        }
+                    }else {
+                        alert("As senhas não coincidem. Por favor, verifique as senhas.");
+                        return;
+                    }
+                } else {
+                    console.error("Cookie usuarioLogado não encontrado.");
+                }
+            });
+
+            // COLETA OS COOKIES DO USUÁRIO
+            function getCookie(name) {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    if (cookie.startsWith(name + '=')) {
+                        return decodeURIComponent(cookie.substring(name.length + 1));
+                    }
+                }
+                return null;
+            }
+        });
+
+        listarUsuarios();
+
+        // Função para listar todos os usuários da tabela "usuarios" no console
+        function listarUsuarios() {
+            alasql.promise('SELECT * FROM usuarios')
+            .then(function(usuarios) {
+                console.log("Usuários cadastrados:");
+                console.log(usuarios);
+            })
+            .catch(function(error) {
+                console.error("Erro ao listar os usuários:", error);
+            });
+        }
+    </script>
+</body>
+</html>

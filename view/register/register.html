@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <title>AGROSYS | Registre-se</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">    
+    <link rel="icon" type="image/png" href="../../images/icons/favicon.ico"/>
+    <link rel="stylesheet" type="text/css" href="../../vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../../fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="../../fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
+    <link rel="stylesheet" type="text/css" href="../../vendor/animate/animate.css">
+    <link rel="stylesheet" type="text/css" href="../../vendor/css-hamburgers/hamburgers.min.css">
+    <link rel="stylesheet" type="text/css" href="../../vendor/animsition/css/animsition.min.css">
+    <link rel="stylesheet" type="text/css" href="../../vendor/select2/select2.min.css">
+    <link rel="stylesheet" type="text/css" href="../../vendor/daterangepicker/daterangepicker.css">
+    <link rel="stylesheet" type="text/css" href="../../css/util.css">
+    <link rel="stylesheet" type="text/css" href="../../css/main.css">
+</head>
+<body style="background-color: #666666;">
+    
+    <div class="limiter">
+        <div class="container-login100">
+            <div class="wrap-login100">
+                <form class="login100-form validate-form">
+
+					<a href="../login/login.html" class="back-btn">
+						<i class="fa fa-arrow-left" style="font-size: 24px;"></i> 
+					</a>
+
+                    <span class="login100-form-title p-b-43">
+                        Registre-se 
+                    </span>
+                    
+                    
+                    <div class="wrap-input100 validate-input" data-validate = "Nome válido é requerido">
+                        <input class="input100" type="text" name="nomeUsuario" id="nomeUsuario">
+                        <span class="focus-input100"></span>
+                        <span class="label-input100">Nome Completo</span>
+                    </div>
+                    
+                    
+					<div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
+						<input class="input100" type="text" name="emailUsuario" id="emailUsuario">
+						<span class="focus-input100"></span>
+						<span class="label-input100">Email</span>
+					</div>
+
+					<div class="wrap-input100 validate-input" data-validate="Senha é necessária">
+                        <span class="btn-show-pass" style="position: absolute; top: 50%; right: 10%; transform: translateY(-50%); cursor: pointer;">
+							<i class="fa fa-eye-slash" aria-hidden="true" style="font-size: 24px; display: block;" onclick="togglePasswordVisibility('senhaUsuarioRegister', 0)"></i>
+							<i class="fa fa-eye" aria-hidden="true" style="font-size: 24px; display: none;" onclick="togglePasswordVisibility('senhaUsuarioRegister', 0)"></i>
+						</span>
+						<input class="input100" type="password" name="senhaUsuarioRegister" id="senhaUsuarioRegister">
+						<span class="focus-input100"></span>
+						<span class="label-input100">Senha</span>
+					</div>
+
+
+					<div class="wrap-input100 validate-input" data-validate="Confirmação de senha necessária">
+                        <span class="btn-show-pass" style="position: absolute; top: 50%; right: 10%; transform: translateY(-50%); cursor: pointer;">
+							<i class="fa fa-eye-slash" aria-hidden="true" style="font-size: 24px; display: block;" onclick="togglePasswordVisibility('confirmacaoSenhaUsuarioRegister', 1)"></i>
+							<i class="fa fa-eye" aria-hidden="true" style="font-size: 24px; display: none;" onclick="togglePasswordVisibility('confirmacaoSenhaUsuarioRegister', 1)"></i>
+						</span>
+						<input class="input100" type="password" name="confirmacaoSenhaUsuarioRegister" id="confirmacaoSenhaUsuarioRegister">
+						<span class="focus-input100"></span>
+						<span class="label-input100">Confirmar senha</span>
+					</div>
+
+
+                    <div class="container-login100-form-btn">
+                        <button id="enviarBtn" class="login100-form-btn">
+                            Enviar
+                        </button>
+                    </div>
+
+                </form>
+
+                <div class="login100-more" style="background-image: url('img/imgRegister.jpg');">
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../../vendor/jquery/jquery-3.2.1.min.js"></script>
+    <script src="../../vendor/animsition/js/animsition.min.js"></script>
+    <script src="../../vendor/bootstrap/js/popper.js"></script>
+    <script src="../../vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../../vendor/select2/select2.min.js"></script>
+    <script src="../../vendor/daterangepicker/moment.min.js"></script>
+    <script src="../../vendor/daterangepicker/daterangepicker.js"></script>
+    <script src="../../vendor/countdowntime/countdowntime.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alasql@latest"></script>
+    <script src="../registerRepository/register.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script src="../../js/main.js"></script>
+    <script>
+
+        // CRIAR BANCO DE DADOS
+        alasql(`
+            CREATE LOCALSTORAGE DATABASE IF NOT EXISTS agrosqldb;
+            ATTACH LOCALSTORAGE DATABASE agrosqldb;
+            USE agrosqldb;
+
+            CREATE TABLE IF NOT EXISTS usuarios (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                nome VARCHAR(255),
+                email VARCHAR(255),
+                senha VARCHAR(255)
+            );
+        `);
+
+        // Função para criptografar a senha
+            function encryptPassword(password) {
+            const salt = CryptoJS.lib.WordArray.random(16);
+
+            const hash = CryptoJS.PBKDF2(password, salt, { keySize: 512/32, iterations: 1000 });
+
+            const saltString = CryptoJS.enc.Base64.stringify(salt);
+            const hashString = CryptoJS.enc.Base64.stringify(hash);
+
+            return saltString + ":" + hashString;
+        }
+
+        // CADASTRAR NOVO USUÁRIO
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById("enviarBtn").addEventListener("click", function(event) {
+                event.preventDefault(); 
+
+                var nome = document.getElementById("nomeUsuario").value;
+                var email = document.getElementById("emailUsuario").value;
+                var senha = document.getElementById("senhaUsuarioRegister").value;
+                var confirmacaoSenha = document.getElementById("confirmacaoSenhaUsuarioRegister").value;
+
+                if (senha !== confirmacaoSenha) {
+                    alert("As senhas não coincidem. Por favor, verique as senhas.");
+                    return;
+                } else {
+                    const senhaCriptografada = encryptPassword(senha);
+                    inserirUsuario(nome, email, senhaCriptografada);
+                }
+            });
+        });
+
+    </script>
+</body>
+</html>

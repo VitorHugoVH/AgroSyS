@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+	<title>AGROSYS | Login</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">	
+	<link rel="icon" type="image/png" href="../../images/icons/favicon.ico"/>
+	<link rel="stylesheet" type="text/css" href="../../vendor/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="../../fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="../../fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
+	<link rel="stylesheet" type="text/css" href="../../vendor/animate/animate.css">
+	<link rel="stylesheet" type="text/css" href="../../vendor/css-hamburgers/hamburgers.min.css">
+	<link rel="stylesheet" type="text/css" href="../../vendor/animsition/css/animsition.min.css">
+	<link rel="stylesheet" type="text/css" href="../../vendor/select2/select2.min.css">
+	<link rel="stylesheet" type="text/css" href="../../vendor/daterangepicker/daterangepicker.css">
+	<link rel="stylesheet" type="text/css" href="../../css/util.css">
+	<link rel="stylesheet" type="text/css" href="../../css/main.css">
+</head>
+<body style="background-color: #666666;">
+	
+	<div class="limiter">
+		<div class="container-login100">
+			<div class="wrap-login100">
+				<form class="login100-form validate-form">
+					<span class="login100-form-title p-b-43">
+						Faça seu login
+					</span>
+					
+					
+					<div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
+						<input class="input100" type="text" name="emailUsuario" id="emailUsuario">
+						<span class="focus-input100"></span>
+						<span class="label-input100">Email</span>
+					</div>
+					
+					<div class="wrap-input100 validate-input" data-validate="Senha é necessária">
+						<span class="btn-show-pass" style="position: absolute; top: 50%; right: 10%; transform: translateY(-50%); cursor: pointer;">
+							<i class="fa fa-eye-slash" aria-hidden="true" style="font-size: 24px; display: block;" onclick="togglePasswordVisibility('senhaUsuario', 0)"></i>
+							<i class="fa fa-eye" aria-hidden="true" style="font-size: 24px; display: none;" onclick="togglePasswordVisibility('senhaUsuario', 0)"></i>
+						</span>
+						<input class="input100" type="password" name="senhaUsuario" id="senhaUsuario">
+						<span class="focus-input100"></span>
+						<span class="label-input100">Senha</span>
+					</div>
+
+					<div class="flex-sb-m w-full p-t-3 p-b-32">
+						<div class="contact100-form-checkbox">
+							<input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me">
+							<label class="label-checkbox100" for="ckb1">
+								Lembrar-me
+							</label>
+						</div>
+					</div>
+			
+
+					<div class="container-login100-form-btn">
+						<button id="enviarBntLogin" class="login100-form-btn">
+							Login
+						</button>
+					</div>
+					
+					<div class="text-center p-t-46 p-b-20">
+						<span class="txt2">
+							Não possui uma conta?
+						</span>
+						<a href="../register/register.html"><p class="txt3">Registre-se</p></a>
+					</div>
+
+				</form>
+
+				<div class="login100-more" style="background-image: url('img/imgLogin.jpg');">
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="../../vendor/jquery/jquery-3.2.1.min.js"></script>
+	<script src="../../vendor/animsition/js/animsition.min.js"></script>
+	<script src="../../vendor/bootstrap/js/popper.js"></script>
+	<script src="../../vendor/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../vendor/select2/select2.min.js"></script>
+	<script src="../../vendor/daterangepicker/moment.min.js"></script>
+	<script src="../../vendor/daterangepicker/daterangepicker.js"></script>
+	<script src="../../vendor/countdowntime/countdowntime.js"></script>
+	<script src="../loginRepository/login.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/alasql@latest"></script>
+	<script src="../../js/main.js"></script>
+	<script>
+
+		// CRIAR BANCO DE DADOS
+		alasql(`
+            CREATE LOCALSTORAGE DATABASE IF NOT EXISTS agrosqldb;
+            ATTACH LOCALSTORAGE DATABASE agrosqldb;
+            USE agrosqldb;
+        `);
+
+		// VERIFICAÇÃO DE LOGIN
+		document.addEventListener("DOMContentLoaded", function() {
+
+			// Verificar se existe um cookie de sessão ativo
+			var cookies = document.cookie.split(';');
+			var usuarioLogado = null;
+			for (var i = 0; i < cookies.length; i++) {
+				var cookie = cookies[i].trim();
+				if (cookie.startsWith("usuarioLogado=")) {
+					usuarioLogado = JSON.parse(cookie.substring("usuarioLogado=".length, cookie.length));
+					break;
+				}
+			}
+
+			if (usuarioLogado) {
+				window.location.href = "../home/home.html";
+			}
+
+			document.getElementById("enviarBntLogin").addEventListener("click", function(event) {
+				event.preventDefault();
+
+				var email = document.getElementById("emailUsuario").value;
+				var senha = document.getElementById("senhaUsuario").value;
+				var lembrarMe = document.getElementById("ckb1").checked;
+
+				if (lembrarMe) {
+					lembrarMe = true;
+				} else {
+					lembrarMe = false
+				}
+				
+				verificarUsuario(email, senha, lembrarMe);
+			});
+
+			    // Listar todos os usuários no console
+				listarUsuarios();
+		});
+
+		// Função para listar todos os usuários da tabela "usuarios" no console
+		function listarUsuarios() {
+			alasql.promise('SELECT * FROM usuarios')
+			.then(function(usuarios) {
+				console.log("Usuários cadastrados:");
+				console.log(usuarios);
+			})
+			.catch(function(error) {
+				console.error("Erro ao listar os usuários:", error);
+			});
+		}
+	</script>
+</body>
+</html>
