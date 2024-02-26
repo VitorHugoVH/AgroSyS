@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <title>AGROSYS | Cadastrar Cliente</title>
+    <title>AGROSYS | Cadastrar Endereco</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">  
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -30,10 +30,10 @@
                         <a class="nav-link" href="../home/home.html">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="./cadastrarCliente.html">Cadastrar Cliente</a>
+                        <a class="nav-link" href="../cadastrarCliente/cadastrarCliente.html">Cadastrar Cliente</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../cadastrarEndereco/cadastrarEndereco.html">Cadastrar Endereço</a>
+                        <a class="nav-link active" aria-current="page" href="./cadastrarEndereco.html">Cadastrar Endereço</a>
                     </li>
                 </ul>
                 <div class="d-flex">
@@ -112,92 +112,106 @@
             </div>
         </div>
 
-        <!-- MODAL CADASTRAR CLIENTE -->
-        <div class="modal fade" id="staticBackdropCliente" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <!-- MODAL CADASTRAR ENDRECO -->
+        <div class="modal fade" id="staticBackdropEndereco" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-md">
             <div class="modal-content">
                 <div class="modal-header">
-                <h1 class="modal-title fs-5" id="staticBackdropLabel">Cadastrar Cliente</h1>
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Cadastrar Endereco</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="nomeCliente" class="form-label">Nome completo</label>
-                        <input type="text" class="form-control" name="nomeCliente" id="nomeCliente" placeholder="Nome cliente" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="cpfCliente" class="form-label">CPF</label>
-                        <input type="text" class="form-control" name="cpfCliente" id="cpfCliente" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="nascimentoCliente" class="form-label">Data nascimento</label>
-                        <input type="date" class="form-control" name="nascimentoCliente" id="nascimentoCliente" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="telefoneCliente" class="form-label">Telefone</label>
-                        <input type="text" class="form-control" name="telefoneCliente" id="telefoneCliente" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="celularCliente" class="form-label">Celular</label>
-                        <input type="text" class="form-control" name="celularCliente" id="celularCliente" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="sexoCliente" class="form-label">Sexo</label>
-                        <select class="form-select" name="sexoCliente" id="sexoCliente" required>
-                            <option value="1">Masculino</option>
-                            <option value="2">Feminino</option>
+                        <label for="clienteAdd" class="form-label">Cliente</label>
+                        <select class="form-select" name="clienteAdd" id="clienteAdd" required>
+                            
                         </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="cep" class="form-label">CEP</label>
+                        <input type="text" class="form-control" name="cep" id="cep" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="rua" class="form-label">Rua</label>
+                        <input type="text" class="form-control" name="rua" id="rua" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="bairro" class="form-label">Bairro</label>
+                        <input type="text" class="form-control" name="bairro" id="bairro" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="cidade" class="form-label">Cidade</label>
+                        <input type="text" class="form-control" name="cidade" id="cidade" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="estado" class="form-label">Estado</label>
+                        <input type="text" class="form-control" name="estado" id="estado" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="pais" class="form-label">País</label>
+                        <input type="text" class="form-control" name="pais" id="pais" required>
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="principal">
+                        <label class="form-check-label" for="principal">Endereço Principal ?</label>
                     </div>
                 </div>
                 <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" id="btnCadastarCliente" class="btn btn-success">Salvar Alterações</button>
+                <button type="button" id="btnCadastarEndereco" class="btn btn-success">Salvar Alterações</button>
                 </div>
             </div>
             </div>
         </div>
 
-        <!-- MODAL EDIÇÃO CLIENTE -->
-        <div class="modal fade" id="staticBackdropClienteEdit" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <!-- MODAL EDIÇÃO ENDERECO -->
+        <div class="modal fade" id="staticBackdropEnderecoEdit" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-md">
             <div class="modal-content">
                 <div class="modal-header">
-                <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar Cliente</h1>
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar Endereço</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="nomeClienteEdit" class="form-label">Nome completo</label>
-                        <input type="text" class="form-control" name="nomeClienteEdit" id="nomeClienteEdit" placeholder="Nome cliente" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="cpfClienteEdit" class="form-label">CPF</label>
-                        <input type="text" class="form-control" name="cpfClienteEdit" id="cpfClienteEdit" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="nascimentoClienteEdit" class="form-label">Data nascimento</label>
-                        <input type="date" class="form-control" name="nascimentoClienteEdit" id="nascimentoClienteEdit" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="telefoneClienteEdit" class="form-label">Telefone</label>
-                        <input type="text" class="form-control" name="telefoneClienteEdit" id="telefoneClienteEdit" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="celularClienteEdit" class="form-label">Celular</label>
-                        <input type="text" class="form-control" name="celularClienteEdit" id="celularClienteEdit" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="sexoClienteEdit" class="form-label">Sexo</label>
-                        <select class="form-select" name="sexoClienteEdit" id="sexoClienteEdit" required>
-                            <option value="1">Masculino</option>
-                            <option value="2">Feminino</option>
+                        <label for="clienteEdit" class="form-label">Cliente</label>
+                        <select class="form-select" name="clienteEdit" id="clienteEdit" required>
+                            
                         </select>
                     </div>
-                    <input type="hidden" value="" name="idClienteEdit" id="idClienteEdit">
+                    <div class="mb-3">
+                        <label for="cepEdit" class="form-label">CEP</label>
+                        <input type="text" class="form-control" name="cepEdit" id="cepEdit" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="ruaEdit" class="form-label">Rua</label>
+                        <input type="text" class="form-control" name="ruaEdit" id="ruaEdit" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="bairroEdit" class="form-label">Bairro</label>
+                        <input type="text" class="form-control" name="bairroEdit" id="bairroEdit" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="cidadeEdit" class="form-label">Cidade</label>
+                        <input type="text" class="form-control" name="cidadeEdit" id="cidadeEdit" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="estadoEdit" class="form-label">Estado</label>
+                        <input type="text" class="form-control" name="estadoEdit" id="estadoEdit" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="paisEdit" class="form-label">País</label>
+                        <input type="text" class="form-control" name="paisEdit" id="paisEdit" required>
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="principalEdit">
+                        <label class="form-check-label" for="principalEdit">Endereço Principal ?</label>
+                    </div>
+                    <input type="hidden" name="idEdit" id="idEdit" value="">
                 </div>
                 <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" id="btnEditarCliente" class="btn btn-success">Salvar Alterações</button>
+                <button type="button" id="btnEditarEndereco" class="btn btn-success">Salvar Alterações</button>
                 </div>
             </div>
             </div>
@@ -209,12 +223,12 @@
                     <i class="fas fa-fire" style="font-size: 1rem; margin-right: 0px; color: #5a94e5;"></i>
                 </div>
                 <div class="col-11" style="color: #5a94e5;">
-                    <b>CADASTRAR CLIENTE</b>
+                    <b>CADASTRAR ENDEREÇO</b>
                 </div>
             </div>
             <div class="row">
                 <div class="col-12">
-                    <h4>Lista de clientes</h4>
+                    <h4>Lista de endereços</h4>
                 </div>
             </div>
         </div>
@@ -223,37 +237,39 @@
         <div class="row mb-5">
             <div class="col-md-12 d-flex justify-content-center">
                 <div class="input-group">
-                    <input type="text" class="form-control col-md-6 col-12 mb-1" id="termoPesquisa" placeholder="Pesquisar cliente">
+                    <input type="text" class="form-control col-md-6 col-12 mb-1" id="termoPesquisa" placeholder="Pesquisar cidade">
                     <button class="btn btn-primary col-md-3 col-12 mb-1" type="button" id="btnPesquisar">Pesquisar</button>
-                    <button class="btn btn-success col-md-3 col-12 mb-1" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdropCliente">Cadastrar</button>
+                    <button class="btn btn-success col-md-3 col-12 mb-1" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdropEndereco">Cadastrar</button>
                 </div>
             </div>
             <div class="col-md-12"></div>
         </div>
 
-        <!-- TABELA LISTAGEM USUÁRIOS -->
+        <!-- TABELA LISTAGEM ENDEREÇOS -->
         <div class="table-responsive">
             <table class="table">
                 <thead class="table-dark">
                     <tr>
                         <th style="white-space: nowrap;">#ID</th>
-                        <th style="white-space: nowrap;">Nome Completo</th>
-                        <th style="white-space: nowrap;">CPF</th>
-                        <th style="white-space: nowrap;">Data Nascimento</th>
-                        <th style="white-space: nowrap;">Telefone</th>
-                        <th style="white-space: nowrap;">Celular</th>
-                        <th style="white-space: nowrap;">Sexo</th>
+                        <th style="white-space: nowrap;">CEP</th>
+                        <th style="white-space: nowrap;">Rua</th>
+                        <th style="white-space: nowrap;">Bairro</th>
+                        <th style="white-space: nowrap;">Cidade</th>
+                        <th style="white-space: nowrap;">Estado</th>
+                        <th style="white-space: nowrap;">País</th>
+                        <th style="white-space: nowrap;">Cliente</th>
+                        <th style="white-space: nowrap;">Principal</th>
                         <th style="white-space: nowrap;">Opções</th> 
                     </tr>
                 </thead>
-                <tbody id="tabelaClientesBody">
-                    <!-- Os dados dos clientes serão inseridos aqui -->
+                <tbody id="tabelaEnderecosBody">
+                    
                 </tbody>
             </table>
         </div>
     </div>  
 
-    <footer class="mt-10">
+    <footer class="mt-20">
         &copy; 2024 AGROSYS Todos os direitos reservados.
     </footer>
 
@@ -268,7 +284,7 @@
     <script src="../../vendor/daterangepicker/moment.min.js"></script>
     <script src="../../vendor/daterangepicker/daterangepicker.js"></script>
     <script src="../../vendor/countdowntime/countdowntime.js"></script>
-    <script src="../cadastrarClienteRepository/cadastrarCliente.js"></script>
+    <script src="../cadastrarEnderecoRepository/cadastrarEndereco.js"></script>
     <script src="../loginRepository/login.js"></script>
     <script src="../homeRepository/home.js"></script>
     <script src="../../js/main.js"></script>
@@ -279,26 +295,29 @@
             ATTACH LOCALSTORAGE DATABASE agrosqldb;
             USE agrosqldb;
 
-            CREATE TABLE IF NOT EXISTS clientes (
+            CREATE TABLE IF NOT EXISTS enderecos (
                 id INT AUTO_INCREMENT PRIMARY KEY,
-                nome VARCHAR(255),
-                cpf VARCHAR(255),
-                data_nascimento DATE(255),
-                telefone VARCHAR(255),
-                celular VARCHAR(255),
-                sexo VARCHAR(255)
+                cep VARCHAR(255),
+                rua VARCHAR(255),
+                bairro VARCHAR(255),
+                cidade VARCHAR(255),
+                estado VARCHAR(255),
+                pais VARCHAR(255),
+                id_cliente INT,
+                principal BOOLEAN,
+                FOREIGN KEY (id_cliente) REFERENCES clientes(id)
             );
         `);
 
         // Função para listar todos os clientes da tabela clientes
         function listarClientes() {
-            alasql.promise('SELECT * FROM clientes')
-            .then(function (clientes) {
-                console.log("Lista de clientes:", clientes);
+            alasql.promise('SELECT * FROM enderecos')
+            .then(function (enderecos) {
+                console.log("Lista de endereços:", enderecos);
             })
             .catch(function (error) {
-                console.error("Erro ao listar clientes:", error);
-                alert("Erro ao listar clientes. Por favor, tente novamente.");
+                console.error("Erro ao listar endereços:", error);
+                alert("Erro ao listar endereços. Por favor, tente novamente.");
             });
         }
 

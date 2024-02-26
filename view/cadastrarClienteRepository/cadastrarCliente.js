@@ -61,71 +61,75 @@ function preencherTabelaClientes(termoPesquisa) {
         var tabelaBody = document.getElementById('tabelaClientesBody');
         tabelaBody.innerHTML = ''; // Limpa os dados anteriores da tabela
 
-        clientes.forEach(function(cliente) {
-            var row = document.createElement('tr');
-            row.setAttribute('data-cliente-id', cliente.id); // Adiciona um identificador único para cada linha
+        if (clientes.length === 0) {
+            tabelaBody.innerHTML = '<tr><td colspan="8">Nenhum resultado encontrado</td></tr>';
+        } else {
+            clientes.forEach(function(cliente) {
+                var row = document.createElement('tr');
+                row.setAttribute('data-cliente-id', cliente.id); // Adiciona um identificador único para cada linha
 
-            row.innerHTML = `
-                <td style="white-space: nowrap;">${cliente.id}</td>
-                <td style="white-space: nowrap;">${cliente.nome}</td>
-                <td style="white-space: nowrap;">${cliente.cpf}</td>
-                <td style="white-space: nowrap;">${cliente.data_nascimento}</td>
-                <td style="white-space: nowrap;">${cliente.telefone}</td>
-                <td style="white-space: nowrap;">${cliente.celular}</td>
-                <td style="white-space: nowrap;">${cliente.sexo}</td>
-                <td style="white-space: nowrap;">
-                    <button class="btn btn-danger btn-deletar"><i class="fas fa-trash"></i></button> 
-                    <button class="btn btn-primary btn-editar"><i class="fas fa-edit"></i></button>
-                    </td>
-            `;
-            tabelaBody.appendChild(row);
-        });
-
-        // Adiciona o manipulador de eventos para os botões "Editar"
-        tabelaClientesBody.querySelectorAll('.btn-editar').forEach(function(button) {
-            button.addEventListener('click', function() {
-                var row = button.closest('tr');
-                
-                var id = row.cells[0].textContent.trim();
-                var nome = row.cells[1].textContent.trim();
-                var cpf = row.cells[2].textContent.trim();
-                var nascimento = row.cells[3].textContent.trim();
-                var telefone = row.cells[4].textContent.trim();
-                var celular = row.cells[5].textContent.trim();
-                var sexo = row.cells[6].textContent.trim();
-
-                // Preenche o modal com as informações do cliente
-                document.getElementById('nomeClienteEdit').value = nome;
-                document.getElementById('cpfClienteEdit').value = cpf;
-                document.getElementById('nascimentoClienteEdit').value = nascimento;
-                document.getElementById('telefoneClienteEdit').value = telefone;
-                document.getElementById('celularClienteEdit').value = celular;
-                document.getElementById('idClienteEdit').value = id;
-
-                // Define o valor do campo select para o sexo do cliente
-                var selectSexo = document.getElementById('sexoClienteEdit');
-                if (sexo === 'masculino') {
-                    selectSexo.value = '1'; // Valor correspondente para Masculino
-                } else if (sexo === 'feminino') {
-                    selectSexo.value = '2'; // Valor correspondente para Feminino
-                }
-
-                // Abre o modal de edição
-                var modal = new bootstrap.Modal(document.getElementById('staticBackdropClienteEdit'));
-                modal.show();
+                row.innerHTML = `
+                    <td style="white-space: nowrap;">${cliente.id}</td>
+                    <td style="white-space: nowrap;">${cliente.nome}</td>
+                    <td style="white-space: nowrap;">${cliente.cpf}</td>
+                    <td style="white-space: nowrap;">${cliente.data_nascimento}</td>
+                    <td style="white-space: nowrap;">${cliente.telefone}</td>
+                    <td style="white-space: nowrap;">${cliente.celular}</td>
+                    <td style="white-space: nowrap;">${cliente.sexo}</td>
+                    <td style="white-space: nowrap;">
+                        <button class="btn btn-danger btn-deletar"><i class="fas fa-trash"></i></button> 
+                        <button class="btn btn-primary btn-editar"><i class="fas fa-edit"></i></button>
+                        </td>
+                `;
+                tabelaBody.appendChild(row);
             });
-        });
 
-        // Adiciona o manipulador de eventos para os botões "Deletar"
-        tabelaBody.querySelectorAll('.btn-deletar').forEach(function(button) {
-            button.addEventListener('click', function() {
-                var clientId = button.closest('tr').getAttribute('data-cliente-id');
-                if (window.confirm('Tem certeza de que deseja deletar este cliente?')) {
-                    console.log(clientId);
-                    deletarCliente(clientId);
-                }
+            // Adiciona o manipulador de eventos para os botões "Editar"
+            tabelaClientesBody.querySelectorAll('.btn-editar').forEach(function(button) {
+                button.addEventListener('click', function() {
+                    var row = button.closest('tr');
+                    
+                    var id = row.cells[0].textContent.trim();
+                    var nome = row.cells[1].textContent.trim();
+                    var cpf = row.cells[2].textContent.trim();
+                    var nascimento = row.cells[3].textContent.trim();
+                    var telefone = row.cells[4].textContent.trim();
+                    var celular = row.cells[5].textContent.trim();
+                    var sexo = row.cells[6].textContent.trim();
+
+                    // Preenche o modal com as informações do cliente
+                    document.getElementById('nomeClienteEdit').value = nome;
+                    document.getElementById('cpfClienteEdit').value = cpf;
+                    document.getElementById('nascimentoClienteEdit').value = nascimento;
+                    document.getElementById('telefoneClienteEdit').value = telefone;
+                    document.getElementById('celularClienteEdit').value = celular;
+                    document.getElementById('idClienteEdit').value = id;
+
+                    // Define o valor do campo select para o sexo do cliente
+                    var selectSexo = document.getElementById('sexoClienteEdit');
+                    if (sexo === 'masculino') {
+                        selectSexo.value = '1'; // Valor correspondente para Masculino
+                    } else if (sexo === 'feminino') {
+                        selectSexo.value = '2'; // Valor correspondente para Feminino
+                    }
+
+                    // Abre o modal de edição
+                    var modal = new bootstrap.Modal(document.getElementById('staticBackdropClienteEdit'));
+                    modal.show();
+                });
             });
-        });
+
+            // Adiciona o manipulador de eventos para os botões "Deletar"
+            tabelaBody.querySelectorAll('.btn-deletar').forEach(function(button) {
+                button.addEventListener('click', function() {
+                    var clientId = button.closest('tr').getAttribute('data-cliente-id');
+                    if (window.confirm('Tem certeza de que deseja deletar este cliente?')) {
+                        console.log(clientId);
+                        deletarCliente(clientId);
+                    }
+                });
+            });
+        }
     })
     .catch(function(error) {
         console.error("Erro ao preencher tabela de clientes:", error);
@@ -176,29 +180,6 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    document.getElementById("btnEditarCliente").addEventListener("click", async function() {
-        var nomeEdit = document.getElementById("nomeClienteEdit").value;
-        var cpfEdit = document.getElementById("cpfClienteEdit").value;
-        var nascimentoEdit = document.getElementById("nascimentoClienteEdit").value;
-        var telefoneEdit = document.getElementById("telefoneClienteEdit").value;
-        var celularEdit = document.getElementById("celularClienteEdit").value;
-        var sexoCliente = document.getElementById("sexoClienteEdit").value;
-
-        if(sexoCliente == '1') {
-            sexoCliente = 'masculino';
-        } else {
-            sexoCliente = 'feminino';
-        }
-    
-        const sql = `UPDATE clientes SET nome = ?, cpf = ?, data_nascimento = ?, telefone = ?, celular = ?, sexo = ? WHERE telefone = ?`;
-        console.log("SQL para atualização do cliente:", sql);
-        alasql(sql, [nomeEdit, cpfEdit, nascimentoEdit , telefoneEdit, celularEdit, sexoCliente, telefoneEdit]);
-    
-        alert("Cliente atualizado com sucesso!");
-        window.location.href = "../cadastrarCliente/cadastrarCliente.html";
-        return;
-    });
-
     document.getElementById("btnSalvar").addEventListener("click", async function() {
         var usuarioLogado = getCookie("usuarioLogado");
 
@@ -234,7 +215,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
     
-    document.getElementById("btnCadastarCliente").addEventListener("click", async function() {; 
+    document.getElementById("btnCadastarCliente").addEventListener("click", async function() { 
 
         var nomeCliente = document.getElementById("nomeCliente").value;
         var cpfCliente = document.getElementById("cpfCliente").value;
@@ -253,6 +234,44 @@ document.addEventListener("DOMContentLoaded", function() {
             inserirCliente(nomeCliente, cpfCliente, nascimentoCliente, telefoneCliente, celularCliente, sexoCliente);
         } else {
             alert("Por favor. Preencha todos os campos!");
+            return;
+        }
+    });
+
+    document.getElementById("btnEditarCliente").addEventListener("click", async function() {
+        var nomeEdit = document.getElementById("nomeClienteEdit").value;
+        var cpfEdit = document.getElementById("cpfClienteEdit").value;
+        var nascimentoEdit = document.getElementById("nascimentoClienteEdit").value;
+        var telefoneEdit = document.getElementById("telefoneClienteEdit").value;
+        var celularEdit = document.getElementById("celularClienteEdit").value;
+        var sexoCliente = document.getElementById("sexoClienteEdit").value;
+        var idCliente = document.getElementById("idClienteEdit").value;
+    
+        if(sexoCliente == '1') {
+            sexoCliente = 'masculino';
+        } else {
+            sexoCliente = 'feminino';
+        }
+    
+        try {
+            // Verificar se existe algum cliente com o mesmo CPF, excluindo o cliente atual da verificação
+            var clienteCadastrado = alasql('SELECT * FROM clientes WHERE cpf = ? AND id <> ?', [cpfEdit, idCliente]);
+            console.log("Clientes cadastrados com este CPF:", clienteCadastrado);
+    
+            if (clienteCadastrado.length > 0) {
+                alert("CPF já cadastrado. Por favor, insira um novo CPF.");
+                return;
+            } else {
+                const sql = `UPDATE clientes SET nome = ?, cpf = ?, data_nascimento = ?, telefone = ?, celular = ?, sexo = ? WHERE id = ` + idCliente;
+                console.log("SQL para atualização do cliente:", sql);
+                alasql(sql, [nomeEdit, cpfEdit, nascimentoEdit , telefoneEdit, celularEdit, sexoCliente]);
+            
+                alert("Cliente atualizado com sucesso!");
+                window.location.href = "../cadastrarCliente/cadastrarCliente.html";
+                return;
+            }
+        } catch (error) {
+            alert("Erro ao cadastrar cliente. Por favor, tente novamente.");
             return;
         }
     });

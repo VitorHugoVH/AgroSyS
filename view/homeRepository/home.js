@@ -15,10 +15,6 @@ if (!usuarioLogado) {
 }
 
 document.addEventListener("DOMContentLoaded", function() {
-    // Exibir mensagem de boas-vindas e configurar o botão de logout
-    const alertSuccess = document.getElementById("alertSuccess");
-    alertSuccess.style.display = "block";
-    timeOutAlerts(alertSuccess);
 
     //var nomeUsuario = usuarioLogado.nome; 
     var emailUsuario = usuarioLogado.email;
@@ -26,13 +22,67 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Evento de clique no botão de logout
     document.getElementById("logoutBtn").addEventListener("click", encerrarSessao);
+
+    preencherDivClientes()
 });
 
-// TIMEOUT DOS ALERTAS
-function timeOutAlerts(alert) {
-    setTimeout(() => {
-        alert.style.display = "none";
-    }, 3000);
+function preencherDivClientes() {
+    alasql.promise('SELECT * FROM clientes')
+    .then(function(clientes) {
+        var divClientes = document.getElementById('divClientes');
+        divClientes.innerHTML = '';
+
+        if(clientes.length === 0) {
+            divClientes.innerHTML = 'Nenhum cliente cadastrado no sistema.';
+        } else {
+            clientes.forEach(function(cliente) {
+                var imagemSrc = cliente.sexo === 'masculino' ? '../home/imgClientes/men.png' : '../home/imgClientes/woman.png';
+                var cardHtml = `
+                    <div class="col-md-4 col-sm-6">
+                        <a href="#" style="text-decoration: none; color: inherit;">
+                            <div class="card" style="box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);">
+                                <img src="${imagemSrc}" class="card-img-top img-fluid" alt="..." style="height: 300px; object-fit: cover;">
+                                <div class="card-body">
+                                    <h5 class="card-title">${cliente.nome}</h5>
+                                    <p class="card-text" style="margin-bottom: 5%;">${cliente.nome}, desenvolvedor full-stack da empresa AGROSYS.</p>
+                                    <button href="#" data-cliente-id="${cliente.id}" class="btn btn-primary d-flex justify-content-between align-items-center btn-exibir-cliente">
+                                        <span>EXIBIR INFORMAÇÕES</span>
+                                        <i class="fas fa-arrow-right" style="margin-left: 5px; font-size: 1rem;"></i>
+                                    </button>                            
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                `;
+                divClientes.innerHTML += cardHtml;
+            });
+
+            // Adicione manipuladores de eventos de clique a cada botão "EXIBIR INFORMAÇÕES"
+            divClientes.querySelectorAll('.btn-exibir-cliente').forEach(function(button, index) {
+                button.addEventListener('click', function() {
+                    var modalClienteBody = document.getElementById('modalClienteBody');
+                    modalClienteBody.innerHTML = ''; 
+
+                    var cliente = clientes[index];
+                    var informacoesCliente = `
+                        <p>Nome: ${cliente.nome}</p>
+                        <p>CPF: ${cliente.cpf}</p>
+                        <p>Data de Nascimento: ${cliente.data_nascimento}</p>
+                        <p>Telefone: ${cliente.telefone}</p>
+                        <p>Celular: ${cliente.celular}</p>
+                        <p>Sexo: ${cliente.sexo}</p>
+                    `;
+                    modalClienteBody.innerHTML = informacoesCliente;
+
+                    var modalCliente = new bootstrap.Modal(document.getElementById('modalCliente'));
+                    modalCliente.show();
+                });
+            });
+        }
+    })
+    .catch(function(error) {
+        console.error("Erro ao preencher div de clientes:", error);
+    });
 }
 
 // FUNÇÃO DE LOGOUT

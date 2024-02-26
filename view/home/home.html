@@ -34,7 +34,7 @@
                         <a class="nav-link" href="../cadastrarCliente/cadastrarCliente.html">Cadastrar Cliente</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Cadastrar Endereço</a>
+                        <a class="nav-link" href="../cadastrarEndereco/cadastrarEndereco.html">Cadastrar Endereço</a>
                     </li>
                 </ul>
                 <div class="d-flex">
@@ -53,11 +53,6 @@
             </div>
         </div>
     </nav>
-
-    <!--ALERTA SUCCESS LOGIN-->
-    <div class="alert alert-success" role="alert" id="alertSuccess" style="display: none;">
-        Login realizado com sucesso!
-    </div>
 
     <!--CONTEÚDO-->
     <div class="container" style="margin-bottom: 80px;">
@@ -118,6 +113,24 @@
             </div>
         </div>
 
+        <!-- Modal para exibir informações do cliente -->
+        <div class="modal fade" id="modalCliente" tabindex="-1" aria-labelledby="modalClienteLabel" aria-hidden="true">
+            <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="modalClienteLabel">Informações do Cliente</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="modalClienteBody">
+                <!-- Aqui serão exibidas as informações do cliente -->
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+            </div>
+        </div>
+
         <div class="apresentacao">
             <div class="row align-items-center">
                 <div class="col-1" style="margin-right: -10px;">
@@ -133,52 +146,8 @@
                 </div>
             </div>
         </div>
-        <div class="row mb-4">
-            <div class="col-md-4 col-sm-6">
-                <a href="#" style="text-decoration: none; color: inherit;">
-                    <div class="card" style="box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);">
-                        <img src="../login/img/imgLogin.jpg" class="card-img-top img-fluid" alt="..." style="height: 200px; object-fit: cover;">
-                        <div class="card-body">
-                            <h5 class="card-title">Vitor Hugo</h5>
-                            <p class="card-text" style="margin-bottom: 5%;">Vitor Hugo, desenvolvedor full-stack da empresa AgroSys</p>
-                            <a href="#" class="btn btn-primary d-flex justify-content-between align-items-center">
-                                <span>EDITAR INFORMAÇÕES</span>
-                                <i class="fas fa-arrow-right" style="margin-left: 5px; font-size: 1rem;"></i>
-                            </a>                            
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-4 col-sm-6">
-                <a href="#" style="text-decoration: none; color: inherit;">
-                    <div class="card" style="box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);">
-                        <img src="../login/img/imgLogin.jpg" class="card-img-top img-fluid" alt="..." style="height: 200px; object-fit: cover;">
-                        <div class="card-body">
-                            <h5 class="card-title">Vitor Hugo</h5>
-                            <p class="card-text" style="margin-bottom: 5%;">Vitor Hugo, desenvolvedor full-stack da empresa AgroSys</p>
-                            <a href="#" class="btn btn-primary d-flex justify-content-between align-items-center">
-                                <span>EDITAR INFORMAÇÕES</span>
-                                <i class="fas fa-arrow-right" style="margin-left: 5px; font-size: 1rem;"></i>
-                            </a>                            
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-4 col-sm-6">
-                <a href="#" style="text-decoration: none; color: inherit;">
-                    <div class="card" style="box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);">
-                        <img src="../login/img/imgLogin.jpg" class="card-img-top img-fluid" alt="..." style="height: 200px; object-fit: cover;">
-                        <div class="card-body">
-                            <h5 class="card-title">Vitor Hugo</h5>
-                            <p class="card-text" style="margin-bottom: 5%;">Vitor Hugo, desenvolvedor full-stack da empresa AgroSys</p>
-                            <a href="#" class="btn btn-primary d-flex justify-content-between align-items-center">
-                                <span>EDITAR INFORMAÇÕES</span>
-                                <i class="fas fa-arrow-right" style="margin-left: 5px; font-size: 1rem;"></i>
-                            </a>                            
-                        </div>
-                    </div>
-                </a>
-            </div>
+        <div class="row mb-4" id="divClientes">
+
         </div>
     </div>  
 
