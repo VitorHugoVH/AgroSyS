@@ -30,8 +30,7 @@
                     <span class="login100-form-title p-b-43">
                         Banco de Dados
                     </span>
-                    
-                    
+            
                     <div class="wrap-input100">
                         <label class="form-label" style="padding-left: 15px;" for="fileInput">Upload Banco de Dados</label>
                         <input class="form-control" type="file" id="fileInput" accept=".sql">
@@ -69,31 +68,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <script src="../../js/main.js"></script>
     <script>
-        // CRIAR BANCO DE DADOS
+
+        // CRIAR BANCO DE DADOS CASO NÃO EXISTA
 		alasql(`
             CREATE LOCALSTORAGE DATABASE IF NOT EXISTS agrosqldb;
             ATTACH LOCALSTORAGE DATABASE agrosqldb;
             USE agrosqldb;
         `);
 
-        function listarInformacoesTabelas() {
-            try {
-                const usuarios = alasql('SELECT * FROM usuarios');
-                const clientes = alasql('SELECT * FROM clientes');
-                const enderecos = alasql('SELECT * FROM enderecos');
-
-                console.log("Informações da tabela 'usuarios':");
-                console.table(usuarios);
-
-                console.log("Informações da tabela 'clientes':");
-                console.table(clientes);
-
-                console.log("Informações da tabela 'enderecos':");
-                console.table(enderecos);
-            } catch(error) {
-                console.error('Erro ao listar informações das tabelas:', error);
-            }
-        }
     </script>
 </body>
 </html>

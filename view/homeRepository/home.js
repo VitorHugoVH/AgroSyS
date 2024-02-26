@@ -1,4 +1,4 @@
-// Verificar se existe um cookie de sessão ativo
+// VERIFICAR A COOKIE DE SESSÃO ATIVO
 var cookies = document.cookie.split(';');
 var usuarioLogado = null;
 for (var i = 0; i < cookies.length; i++) {
@@ -9,23 +9,23 @@ for (var i = 0; i < cookies.length; i++) {
     }
 }
 
-// Se não houver usuário logado, redirecione para a página de login
+// FUNÇÃO USUÁRIO NÃO LOGADO
 if (!usuarioLogado) {
     window.location.href = "../login/login.html";
 }
 
 document.addEventListener("DOMContentLoaded", function() {
 
-    //var nomeUsuario = usuarioLogado.nome; 
     var emailUsuario = usuarioLogado.email;
     document.getElementById("nomeUsuario").textContent = emailUsuario; 
 
-    // Evento de clique no botão de logout
+    // EVENTO DE CLICK BOTÂO SAIR
     document.getElementById("logoutBtn").addEventListener("click", encerrarSessao);
 
     preencherDivClientes()
 });
 
+// FUNÇÃO PREENCHER CLIENTES CARDS
 function preencherDivClientes() {
     alasql.promise('SELECT * FROM clientes')
     .then(function(clientes) {
@@ -57,7 +57,7 @@ function preencherDivClientes() {
                 divClientes.innerHTML += cardHtml;
             });
 
-            // Adicione manipuladores de eventos de clique a cada botão "EXIBIR INFORMAÇÕES"
+            // EVENTO DE CLICK EXIBIR INFORMAÇÕES CLIENTE CARD
             divClientes.querySelectorAll('.btn-exibir-cliente').forEach(function(button, index) {
                 button.addEventListener('click', function() {
                     var modalClienteBody = document.getElementById('modalClienteBody');
@@ -92,7 +92,7 @@ function encerrarSessao() {
     window.location.href = "../login/login.html";
 }
 
-// STYLES FOCUS
+// STYLES FOCUS INPUTS
 function colorTransformation(param, isFocus) {
     const backgroundColor = isFocus ? "red" : "white";
     const textColor = isFocus ? "white" : "black";
@@ -117,7 +117,7 @@ async function verificarEmailExistentes(email) {
     return usuarioCadastrado.length > 0;
 }
 
-// Função para criptografar a senha
+// FUNÇÃO CRIPTOGRAFAR SENHAS
 function encryptPassword(password) {
     const salt = CryptoJS.lib.WordArray.random(16);
 
@@ -128,3 +128,90 @@ function encryptPassword(password) {
 
     return saltString + ":" + hashString;
 }
+
+// FUNÇÕES EXECUTADAS QUANDO A PÁGINA CARREGA
+document.addEventListener("DOMContentLoaded", function() {
+    
+    // FUNÇÃO SALVAR NOVO EMAIL
+    document.getElementById("btnSalvarAlteracoes").addEventListener("click", async function() {
+        var usuarioLogado = getCookie("usuarioLogado");
+
+        if (usuarioLogado) {
+            var usuario = JSON.parse(usuarioLogado);
+            var senhaUsuario = document.getElementById("senhaUsuario").value;
+            var novoEmail = document.getElementById("novoEmail").value;
+            var idUsuario = usuario.id;
+
+            if (verificarSenha(senhaUsuario, usuario.senha)) {
+                if (novoEmail !== usuario.email) {
+                    var sql = `UPDATE usuarios SET email = ? WHERE id = ?`;
+                
+                    alasql(sql, [novoEmail, idUsuario]);
+                                
+                    usuario.email = novoEmail;
+                    document.cookie = `usuarioLogado=${JSON.stringify(usuario)}; path=/`;
+                
+                    alert("Email atualizado com sucesso!");
+                    window.location.href = "../home/home.html";
+                    return;
+                } else {
+                    alert("O novo email deve ser diferente do seu próprio email.");
+                    return;
+                }
+            } else {
+                alert("Senha incorreta! Por favor, verifique a senha.");
+                return;
+            }
+        } else {
+            console.error("Cookie usuarioLogado não encontrado.");
+        }
+    });
+
+    // FUNÇÃO SALVAR NOVA SENHA
+    document.getElementById("btnSalvar").addEventListener("click", async function() {
+        var usuarioLogado = getCookie("usuarioLogado");
+
+        if(usuarioLogado) {
+            var usuario = JSON.parse(usuarioLogado);
+            var novaSenha = document.getElementById("novaSenha").value;
+            var confirmarNovaSenha = document.getElementById("confirmarNovaSenha").value;
+            var senhaAtual = document.getElementById("senha").value;
+
+            if(novaSenha == confirmarNovaSenha) {
+                if(verificarSenha(senhaAtual, usuario.senha)) {
+
+                    var senhaCriptografada = encryptPassword(novaSenha);
+
+                    var sqlUpdateSenha = `UPDATE usuarios SET senha = ? WHERE id = ?`;
+                    alasql(sqlUpdateSenha, [senhaCriptografada, usuario.id]);
+
+                    usuario.senha = senhaCriptografada;
+                    document.cookie = `usuarioLogado=${JSON.stringify(usuario)}; path=/`;
+
+                    alert("Senha atualizada com sucesso!");
+                    window.location.href = "../home/home.html";
+                    return;
+                } else {
+                    alert("Senha incorreta! Por favor, insira uma senha válida!");
+                }
+            }else {
+                alert("As senhas não coincidem. Por favor, verifique as senhas.");
+                return;
+            }
+        } else {
+            console.error("Cookie usuarioLogado não encontrado.");
+        }
+    });
+
+    // COLETA OS COOKIES DO USUÁRIO
+    function getCookie(name) {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            if (cookie.startsWith(name + '=')) {
+                return decodeURIComponent(cookie.substring(name.length + 1));
+            }
+        }
+        return null;
+    }
+});

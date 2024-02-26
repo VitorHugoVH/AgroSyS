@@ -113,7 +113,7 @@
             </div>
         </div>
 
-        <!-- Modal para exibir informações do cliente -->
+        <!-- MODAL INFORMAÇÕES CLIENTE DINÂMICAMENTE -->
         <div class="modal fade" id="modalCliente" tabindex="-1" aria-labelledby="modalClienteLabel" aria-hidden="true">
             <div class="modal-dialog">
             <div class="modal-content">
@@ -122,7 +122,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="modalClienteBody">
-                <!-- Aqui serão exibidas as informações do cliente -->
+                    <!-- INFORMAÇÕES DO CLIENTE CLICADO -->
                 </div>
                 <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
@@ -174,109 +174,7 @@
             ATTACH LOCALSTORAGE DATABASE agrosqldb;
             USE agrosqldb;
         `);
-
-        // FUNÇÃO ALTERAR EMAIL USUÁRIO
-        document.addEventListener("DOMContentLoaded", function() {
-            document.getElementById("btnSalvarAlteracoes").addEventListener("click", async function() {
-                var usuarioLogado = getCookie("usuarioLogado");
-
-                if (usuarioLogado) {
-                    var usuario = JSON.parse(usuarioLogado);
-                    var senhaUsuario = document.getElementById("senhaUsuario").value;
-                    var novoEmail = document.getElementById("novoEmail").value;
-                    var idUsuario = usuario.id;
-
-                    console.log(idUsuario);
-
-                    if (verificarSenha(senhaUsuario, usuario.senha)) {
-                        if (novoEmail !== usuario.email) {
-                            var sql = `UPDATE usuarios SET email = ? WHERE id = ?`;
-                            console.log("SQL para atualização do email:", sql);
-                        
-                            alasql(sql, [novoEmail, idUsuario]);
-                        
-                            console.log("Email atualizado com sucesso no banco de dados!");
-                        
-                            usuario.email = novoEmail;
-                            document.cookie = `usuarioLogado=${JSON.stringify(usuario)}; path=/`;
-                        
-                            alert("Email atualizado com sucesso!");
-                            window.location.href = "../home/home.html";
-                            return;
-                        } else {
-                            alert("O novo email deve ser diferente do seu próprio email.");
-                            return;
-                        }
-                    } else {
-                        alert("Senha incorreta! Por favor, verifique a senha.");
-                        return;
-                    }
-                } else {
-                    console.error("Cookie usuarioLogado não encontrado.");
-                }
-            });
-
-            document.getElementById("btnSalvar").addEventListener("click", async function() {
-                var usuarioLogado = getCookie("usuarioLogado");
-
-                if(usuarioLogado) {
-                    var usuario = JSON.parse(usuarioLogado);
-                    var novaSenha = document.getElementById("novaSenha").value;
-                    var confirmarNovaSenha = document.getElementById("confirmarNovaSenha").value;
-                    var senhaAtual = document.getElementById("senha").value;
-
-                    if(novaSenha == confirmarNovaSenha) {
-                        if(verificarSenha(senhaAtual, usuario.senha)) {
-
-                            var senhaCriptografada = encryptPassword(novaSenha);
-
-                            var sqlUpdateSenha = `UPDATE usuarios SET senha = ? WHERE id = ?`;
-                            alasql(sqlUpdateSenha, [senhaCriptografada, usuario.id]);
-
-                            usuario.senha = senhaCriptografada;
-                            document.cookie = `usuarioLogado=${JSON.stringify(usuario)}; path=/`;
-
-                            alert("Senha atualizada com sucesso!");
-                            window.location.href = "../home/home.html";
-                            return;
-                        } else {
-                            alert("Senha incorreta! Por favor, insira uma senha válida!");
-                        }
-                    }else {
-                        alert("As senhas não coincidem. Por favor, verifique as senhas.");
-                        return;
-                    }
-                } else {
-                    console.error("Cookie usuarioLogado não encontrado.");
-                }
-            });
-
-            // COLETA OS COOKIES DO USUÁRIO
-            function getCookie(name) {
-                var cookies = document.cookie.split(';');
-                for (var i = 0; i < cookies.length; i++) {
-                    var cookie = cookies[i].trim();
-                    if (cookie.startsWith(name + '=')) {
-                        return decodeURIComponent(cookie.substring(name.length + 1));
-                    }
-                }
-                return null;
-            }
-        });
-
-        listarUsuarios();
-
-        // Função para listar todos os usuários da tabela "usuarios" no console
-        function listarUsuarios() {
-            alasql.promise('SELECT * FROM usuarios')
-            .then(function(usuarios) {
-                console.log("Usuários cadastrados:");
-                console.log(usuarios);
-            })
-            .catch(function(error) {
-                console.error("Erro ao listar os usuários:", error);
-            });
-        }
+        
     </script>
 </body>
 </html>

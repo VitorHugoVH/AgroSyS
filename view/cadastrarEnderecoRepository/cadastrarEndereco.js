@@ -60,14 +60,14 @@ function preencherTabelaEndereco(termoPesquisa) {
     alasql.promise(sql)
     .then(function(enderecos) {
         var tabelaBody = document.getElementById('tabelaEnderecosBody');
-        tabelaBody.innerHTML = ''; // Limpa os dados anteriores da tabela
+        tabelaBody.innerHTML = ''; 
 
         if (enderecos.length === 0) {
             tabelaBody.innerHTML = '<tr><td colspan="8">Nenhum resultado encontrado</td></tr>';
         } else {
             enderecos.forEach(function(endereco) {
                 var row = document.createElement('tr');
-                row.setAttribute('data-endereco-id', endereco.id); // Adiciona um identificador único para cada linha
+                row.setAttribute('data-endereco-id', endereco.id); 
 
                 row.innerHTML = `
                     <td style="white-space: nowrap;">${endereco.id}</td>
@@ -87,7 +87,7 @@ function preencherTabelaEndereco(termoPesquisa) {
                 tabelaBody.appendChild(row);
             });
 
-            // Adiciona o manipulador de eventos para os botões "Editar"
+            // FUNÇÃO CLICK BOTÃO EDITAR ENDEREÇO
             tabelaEnderecosBody.querySelectorAll('.btn-editar').forEach(function(button) {
                 button.addEventListener('click', function() {
                     var row = button.closest('tr');
@@ -109,9 +109,6 @@ function preencherTabelaEndereco(termoPesquisa) {
                         checkbox.checked = false;
                     }
 
-                    console.log(principal);
-
-                    // Preenche o modal com as informações do cliente
                     document.getElementById('idEdit').value = id;
                     document.getElementById('cepEdit').value = cep;
                     document.getElementById('ruaEdit').value = rua;
@@ -121,18 +118,16 @@ function preencherTabelaEndereco(termoPesquisa) {
                     document.getElementById('paisEdit').value = pais;
                     document.getElementById('clienteEdit').value = cliente;
 
-                    // Abre o modal de edição
                     var modal = new bootstrap.Modal(document.getElementById('staticBackdropEnderecoEdit'));
                     modal.show();
                 });
             });
 
-            // Adiciona o manipulador de eventos para os botões "Deletar"
+            // FUNÇÃO CLICK BOTÃO DELETAR ENDEREÇO
             tabelaBody.querySelectorAll('.btn-deletar').forEach(function(button) {
                 button.addEventListener('click', function() {
                     var enderecoId = button.closest('tr').getAttribute('data-endereco-id');
                     if (window.confirm('Tem certeza de que deseja deletar este endereço?')) {
-                        console.log(enderecoId);
                         deletarEndereco(enderecoId);
                     }
                 });
@@ -149,6 +144,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     preencherTabelaEndereco();
 
+    // FUNÇÃO CLICK BOTÃO EDITAR NOVO EMAIL
     document.getElementById("btnSalvarAlteracoes").addEventListener("click", async function() {
         var usuarioLogado = getCookie("usuarioLogado");
 
@@ -158,16 +154,11 @@ document.addEventListener("DOMContentLoaded", function() {
             var novoEmail = document.getElementById("novoEmail").value;
             var idUsuario = usuario.id;
 
-            console.log(idUsuario);
-
             if (verificarSenha(senhaUsuario, usuario.senha)) {
                 if (novoEmail !== usuario.email) {
                     var sql = `UPDATE usuarios SET email = ? WHERE id = ?`;
-                    console.log("SQL para atualização do email:", sql);
                 
                     alasql(sql, [novoEmail, idUsuario]);
-                
-                    console.log("Email atualizado com sucesso no banco de dados!");
                 
                     usuario.email = novoEmail;
                     document.cookie = `usuarioLogado=${JSON.stringify(usuario)}; path=/`;
@@ -188,6 +179,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
+    // FUNÇÃO CLICK BOTÃO EDITAR NOVA SENHA
     document.getElementById("btnSalvar").addEventListener("click", async function() {
         var usuarioLogado = getCookie("usuarioLogado");
 
@@ -223,6 +215,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
     
+    // FUNÇÃO CLICK BOTÃO CADASTRAR ENDEREÇO
     document.getElementById("btnCadastarEndereco").addEventListener("click", async function() {
         var cep = document.getElementById("cep").value;
         var rua = document.getElementById("rua").value;
@@ -249,6 +242,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });    
 
+    // FUNÇÃO CLICK BOTÃO EDITAR ENDEREÇO
     document.getElementById("btnEditarEndereco").addEventListener("click", async function() {
         var cepEdit = document.getElementById("cepEdit").value;
         var ruaEdit = document.getElementById("ruaEdit").value;
@@ -273,7 +267,6 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     
         const sql = `UPDATE enderecos SET cep = ?, rua = ?, bairro = ?, cidade = ?, estado = ?, pais = ?, id_cliente = ?, principal = ? WHERE id = ` + idEdit;
-        console.log("SQL para atualização do cliente:", sql);
         alasql(sql, [cepEdit, ruaEdit, bairroEdit, cidadeEdit, estadoEdit, paisEdit, clienteEdit, principalEdit, idEdit]);
     
         alert("Endereco atualizado com sucesso!");

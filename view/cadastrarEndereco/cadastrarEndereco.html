@@ -217,6 +217,7 @@
             </div>
         </div>
 
+        <!--CAMPO DE APRESENTAÇÃO-->
         <div class="apresentacao" style="margin-bottom: 5%;">
             <div class="row align-items-center">
                 <div class="col-1" style="margin-right: -10px;">
@@ -289,7 +290,8 @@
     <script src="../homeRepository/home.js"></script>
     <script src="../../js/main.js"></script>
     <script>
-        // CRIAR BANCO DE DADOS
+
+        // CRIAR BANCO DE DADOS E TABELA ENDEREÇOS
 		alasql(`
             CREATE LOCALSTORAGE DATABASE IF NOT EXISTS agrosqldb;
             ATTACH LOCALSTORAGE DATABASE agrosqldb;
@@ -308,33 +310,7 @@
                 FOREIGN KEY (id_cliente) REFERENCES clientes(id)
             );
         `);
-
-        // Função para listar todos os clientes da tabela clientes
-        function listarClientes() {
-            alasql.promise('SELECT * FROM enderecos')
-            .then(function (enderecos) {
-                console.log("Lista de endereços:", enderecos);
-            })
-            .catch(function (error) {
-                console.error("Erro ao listar endereços:", error);
-                alert("Erro ao listar endereços. Por favor, tente novamente.");
-            });
-        }
-
-        function listarTabelas() {
-            alasql.promise('SHOW TABLES')
-                .then(function (result) {
-                    console.log("Tabelas existentes:", result);
-                    // Aqui você pode fazer o que desejar com a lista de tabelas
-                })
-                .catch(function (error) {
-                    console.error("Erro ao listar tabelas:", error);
-                });
-        }
-
-        // Chame a função para listar as tabelas
-        listarTabelas();
-        listarClientes();
+        
     </script>
 </body>
 </html>

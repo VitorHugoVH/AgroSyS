@@ -273,7 +273,8 @@
     <script src="../homeRepository/home.js"></script>
     <script src="../../js/main.js"></script>
     <script>
-        // CRIAR BANCO DE DADOS
+
+        // CRIAR BANCO DE DADOS E TABELA CLIENTES
 		alasql(`
             CREATE LOCALSTORAGE DATABASE IF NOT EXISTS agrosqldb;
             ATTACH LOCALSTORAGE DATABASE agrosqldb;
@@ -289,33 +290,7 @@
                 sexo VARCHAR(255)
             );
         `);
-
-        // Função para listar todos os clientes da tabela clientes
-        function listarClientes() {
-            alasql.promise('SELECT * FROM clientes')
-            .then(function (clientes) {
-                console.log("Lista de clientes:", clientes);
-            })
-            .catch(function (error) {
-                console.error("Erro ao listar clientes:", error);
-                alert("Erro ao listar clientes. Por favor, tente novamente.");
-            });
-        }
-
-        function listarTabelas() {
-            alasql.promise('SHOW TABLES')
-                .then(function (result) {
-                    console.log("Tabelas existentes:", result);
-                    // Aqui você pode fazer o que desejar com a lista de tabelas
-                })
-                .catch(function (error) {
-                    console.error("Erro ao listar tabelas:", error);
-                });
-        }
-
-        // Chame a função para listar as tabelas
-        listarTabelas();
-        listarClientes();
+        
     </script>
 </body>
 </html>

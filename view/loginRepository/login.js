@@ -15,14 +15,14 @@ function iniciarSessao(usuario, lembrarMe) {
     }
 }
 
-// Função para verificar a senha durante o login
+// FUNÇÃO VERIFICAR SENHAS
 function verificarSenha(senhaUsuario, senhaArmazenada) {
     const [storedSalt, storedHash] = senhaArmazenada.split(":");
     const hash = CryptoJS.PBKDF2(senhaUsuario, CryptoJS.enc.Base64.parse(storedSalt), { keySize: 512/32, iterations: 1000 }).toString(CryptoJS.enc.Base64);
     return hash === storedHash;
 }
 
-// Função para verificar as credenciais do usuário
+// FUNÇÃO VERIFICAR CREDENCIAIS USUÁRIO
 function verificarUsuario(emailUsuario, senhaUsuario, lembrarMe) {
     try {
         const user = alasql('SELECT * FROM usuarios WHERE email = ?', [emailUsuario])[0];

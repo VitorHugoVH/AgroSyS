@@ -1,6 +1,5 @@
+// FUNÇÃO CRIPTOGRAFIA DE SENHA
 function encryptPassword(password) {
-
-    console.log(password);
 
     const salt = CryptoJS.lib.WordArray.random(16);
     const hash = CryptoJS.PBKDF2(password, salt, { keySize: 512/32, iterations: 1000 });
@@ -9,6 +8,7 @@ function encryptPassword(password) {
     return saltString + ":" + hashString;
 }
 
+// FUNÇÃO RECEBER ARQUIVO UPLOAD
 function uploadDatabase() {
     const fileInput = document.getElementById('fileInput');
     const file = fileInput.files[0];
@@ -19,22 +19,18 @@ function uploadDatabase() {
             const sqlContent = e.target.result;
 
             try {
-                // Apagar todas as tabelas existentes
                 alasql('DROP TABLE IF EXISTS usuarios');
                 alasql('DROP TABLE IF EXISTS clientes');
                 alasql('DROP TABLE IF EXISTS enderecos');
 
-                // Executar os comandos SQL do arquivo
                 alasql(sqlContent);
 
-            // Criptografar as senhas dos usuários
-            const usuarios = alasql('SELECT * FROM usuarios');
-            usuarios.forEach(function(usuario) {
-                usuario.senha = encryptPassword(usuario.senha);
-                // Atualizar a senha no banco de dados
-                alasql('UPDATE usuarios SET senha = ? WHERE id = ' + usuario.id, [usuario.senha]);
-                console.log("Senha atualizada para o usuário com ID " + usuario.id);
-            });
+                // CRIPTOGRAFIA DA SENHA USUÁRIO
+                const usuarios = alasql('SELECT * FROM usuarios');
+                usuarios.forEach(function(usuario) {
+                    usuario.senha = encryptPassword(usuario.senha);
+                    alasql('UPDATE usuarios SET senha = ? WHERE id = ' + usuario.id, [usuario.senha]);
+                });
 
                 alert('Banco de dados enviado com sucesso!');
                 window.location.href = "../config/configuracoes.html";
@@ -48,7 +44,7 @@ function uploadDatabase() {
     }
 }
 
-// Função para exportar o banco de dados no formato JSON
+// FUNÇÃO EXPORTAR BANCO DE DADOS (JSON)
 function exportDatabase() {
     try {
         const usuarios = alasql('SELECT * FROM usuarios');
@@ -63,7 +59,6 @@ function exportDatabase() {
 
         const databaseJSON = JSON.stringify(database);
 
-        // Criar um link de download para o arquivo JSON
         const blob = new Blob([databaseJSON], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -74,15 +69,14 @@ function exportDatabase() {
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
 
-        console.log('Banco de dados exportado com sucesso!');
     } catch(error) {
-        console.error('Erro ao exportar banco de dados:', error);
+        alert("Banco de Dados não criado! Por Favor, faça o upload de um Banco de Dados.");
+        window.location.href = "../config/configuracoes.html";
     }
 }
 
+// FUNÇÕES EXECUTADAS QUANDO A PÁGINA CARREGA
 document.addEventListener("DOMContentLoaded", function() {
-
-    listarInformacoesTabelas();
 
     const prepopulatedDatabase = localStorage.getItem('prepopulatedDatabase');
     if (prepopulatedDatabase) {
@@ -103,7 +97,7 @@ document.addEventListener("DOMContentLoaded", function() {
         uploadDatabase();
     });
 
-    // Adicionar um event listener para o botão de exportar
+    // FUNÇÃO CLICK BOTÃO EXPORTAR
     document.getElementById("exportBtn").addEventListener("click", function(event) {
         event.preventDefault();
         exportDatabase();

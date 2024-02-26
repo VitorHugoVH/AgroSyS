@@ -2,7 +2,6 @@
 function inserirCliente(nomeCliente, cpfCliente, nascimentoCliente, telefoneCliente, celularCliente, sexoCliente) {
     try {
         var clienteCadastrado = alasql('SELECT * FROM clientes WHERE cpf = ?', [cpfCliente]);
-        console.log("Clientes cadastrados com este CPF:", clienteCadastrado);
 
         if (clienteCadastrado.length > 0) {
             alert("CPF já cadastrado Por favor, insira um novo cpf.");
@@ -24,15 +23,9 @@ function inserirCliente(nomeCliente, cpfCliente, nascimentoCliente, telefoneClie
 function deletarCliente(clienteId) {
     alasql.promise('DELETE FROM clientes WHERE id = ' + clienteId)
     .then(function () {
-        console.log(alasql);
-        console.log("Cliente deletado do banco de dados com sucesso!");
         var rowToRemove = document.querySelector(`tr[data-cliente-id="${clienteId}"]`);
-        console.log("Linha da tabela encontrada para remoção:", rowToRemove);
         rowToRemove.remove();
-        console.log("Linha da tabela removida com sucesso!");
         alert("Cliente deletado com sucesso!");
-
-        listarClientes()
     })
     .catch(function (error) {
         console.error("Erro ao deletar cliente:", error);
@@ -59,14 +52,14 @@ function preencherTabelaClientes(termoPesquisa) {
     alasql.promise(sql)
     .then(function(clientes) {
         var tabelaBody = document.getElementById('tabelaClientesBody');
-        tabelaBody.innerHTML = ''; // Limpa os dados anteriores da tabela
+        tabelaBody.innerHTML = ''; 
 
         if (clientes.length === 0) {
             tabelaBody.innerHTML = '<tr><td colspan="8">Nenhum resultado encontrado</td></tr>';
         } else {
             clientes.forEach(function(cliente) {
                 var row = document.createElement('tr');
-                row.setAttribute('data-cliente-id', cliente.id); // Adiciona um identificador único para cada linha
+                row.setAttribute('data-cliente-id', cliente.id);
 
                 row.innerHTML = `
                     <td style="white-space: nowrap;">${cliente.id}</td>
@@ -84,7 +77,7 @@ function preencherTabelaClientes(termoPesquisa) {
                 tabelaBody.appendChild(row);
             });
 
-            // Adiciona o manipulador de eventos para os botões "Editar"
+            // FUNÇÃO CLIQUE BOTÃO EDITAR
             tabelaClientesBody.querySelectorAll('.btn-editar').forEach(function(button) {
                 button.addEventListener('click', function() {
                     var row = button.closest('tr');
@@ -97,7 +90,6 @@ function preencherTabelaClientes(termoPesquisa) {
                     var celular = row.cells[5].textContent.trim();
                     var sexo = row.cells[6].textContent.trim();
 
-                    // Preenche o modal com as informações do cliente
                     document.getElementById('nomeClienteEdit').value = nome;
                     document.getElementById('cpfClienteEdit').value = cpf;
                     document.getElementById('nascimentoClienteEdit').value = nascimento;
@@ -105,26 +97,23 @@ function preencherTabelaClientes(termoPesquisa) {
                     document.getElementById('celularClienteEdit').value = celular;
                     document.getElementById('idClienteEdit').value = id;
 
-                    // Define o valor do campo select para o sexo do cliente
                     var selectSexo = document.getElementById('sexoClienteEdit');
                     if (sexo === 'masculino') {
-                        selectSexo.value = '1'; // Valor correspondente para Masculino
+                        selectSexo.value = '1'; 
                     } else if (sexo === 'feminino') {
-                        selectSexo.value = '2'; // Valor correspondente para Feminino
+                        selectSexo.value = '2'; 
                     }
 
-                    // Abre o modal de edição
                     var modal = new bootstrap.Modal(document.getElementById('staticBackdropClienteEdit'));
                     modal.show();
                 });
             });
 
-            // Adiciona o manipulador de eventos para os botões "Deletar"
+            // FUNÇÃO CLICK BOTÃO DELETAR
             tabelaBody.querySelectorAll('.btn-deletar').forEach(function(button) {
                 button.addEventListener('click', function() {
                     var clientId = button.closest('tr').getAttribute('data-cliente-id');
                     if (window.confirm('Tem certeza de que deseja deletar este cliente?')) {
-                        console.log(clientId);
                         deletarCliente(clientId);
                     }
                 });
@@ -150,17 +139,12 @@ document.addEventListener("DOMContentLoaded", function() {
             var novoEmail = document.getElementById("novoEmail").value;
             var idUsuario = usuario.id;
 
-            console.log(idUsuario);
-
             if (verificarSenha(senhaUsuario, usuario.senha)) {
                 if (novoEmail !== usuario.email) {
                     var sql = `UPDATE usuarios SET email = ? WHERE id = ?`;
-                    console.log("SQL para atualização do email:", sql);
                 
                     alasql(sql, [novoEmail, idUsuario]);
-                
-                    console.log("Email atualizado com sucesso no banco de dados!");
-                
+                                
                     usuario.email = novoEmail;
                     document.cookie = `usuarioLogado=${JSON.stringify(usuario)}; path=/`;
                 
@@ -180,6 +164,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
+    // FUNÇÃO CLICK BOTÃO SALVAR NOVA SENHA
     document.getElementById("btnSalvar").addEventListener("click", async function() {
         var usuarioLogado = getCookie("usuarioLogado");
 
@@ -215,6 +200,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
     
+    // FUNÇÃO CLICK BOTÃO CADASTRAR CLIENTE
     document.getElementById("btnCadastarCliente").addEventListener("click", async function() { 
 
         var nomeCliente = document.getElementById("nomeCliente").value;
@@ -238,6 +224,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
+    // FUNÇÃO CLICK BOTÃO EDITAR CLIENTE
     document.getElementById("btnEditarCliente").addEventListener("click", async function() {
         var nomeEdit = document.getElementById("nomeClienteEdit").value;
         var cpfEdit = document.getElementById("cpfClienteEdit").value;
@@ -254,16 +241,13 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     
         try {
-            // Verificar se existe algum cliente com o mesmo CPF, excluindo o cliente atual da verificação
             var clienteCadastrado = alasql('SELECT * FROM clientes WHERE cpf = ? AND id <> ?', [cpfEdit, idCliente]);
-            console.log("Clientes cadastrados com este CPF:", clienteCadastrado);
     
             if (clienteCadastrado.length > 0) {
                 alert("CPF já cadastrado. Por favor, insira um novo CPF.");
                 return;
             } else {
                 const sql = `UPDATE clientes SET nome = ?, cpf = ?, data_nascimento = ?, telefone = ?, celular = ?, sexo = ? WHERE id = ` + idCliente;
-                console.log("SQL para atualização do cliente:", sql);
                 alasql(sql, [nomeEdit, cpfEdit, nascimentoEdit , telefoneEdit, celularEdit, sexoCliente]);
             
                 alert("Cliente atualizado com sucesso!");
