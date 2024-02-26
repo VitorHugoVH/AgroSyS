@@ -504,7 +504,39 @@ input.input100 {
   transition: all 0.4s;
 }
 
+.login100-form-btnExport {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 20px;
+  width: 100%;
+  height: 50px;
+  margin-top: 2%;
+  border-radius: 10px;
+  background: #b8b8b8;
+
+  font-family: Montserrat-Bold;
+  font-size: 12px;
+  color: #fff;
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  transition: all 0.4s;
+}
+
 .login100-form-btn:hover {
+  background: #333333;
+}
+
+.login100-form-btnExport:hover {
   background: #333333;
 }
 
@@ -539,7 +571,7 @@ input.input100 {
   .login100-form {
     padding-left: 15px;
     padding-right: 15px;
-    padding-top: 70px;
+    padding-top: 180px;
   }
 }
 
